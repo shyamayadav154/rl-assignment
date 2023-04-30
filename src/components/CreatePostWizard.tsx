@@ -111,8 +111,8 @@ function CreatePostWizard() {
     const size = file?.size / 1024 / 1024;
     console.log(size);
 
-    if (size > 4.05) {
-      alert("Image size should be less than 4Mb");
+    if (size > 3.05) {
+      alert("Image size should be less than 3Mb");
       return;
     }
 

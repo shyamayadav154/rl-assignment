@@ -40,7 +40,7 @@ const ProfilePage: NextPage = () => {
 
   const currentUsername = session.user?.username;
 
-  if (!session.isSignedIn) return <div>Not signed in</div>;
+  if (!session.isSignedIn) return null; 
   if (!currentUsername) return <div>Current user not found</div>;
 
   if (isLoading) return <div>Loading...</div>;

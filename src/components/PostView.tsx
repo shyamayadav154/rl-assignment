@@ -101,9 +101,9 @@ const PostView = (props: PostWithUser) => {
             >
               {totalLikes} Like
             </button>
-            <button className="rounded border px-3 py-1">
+            <div className="rounded border border-transparent px-3 py-1">
               {post.comments.length} Comments
-            </button>
+            </div>
           </div>
         </article>
         <CommentWizard

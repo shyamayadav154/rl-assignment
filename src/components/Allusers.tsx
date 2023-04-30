@@ -11,7 +11,7 @@ const AllUsers = () => {
     userId,
   });
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return null;
   if (!users) return <div>No data</div>;
 
   console.log({

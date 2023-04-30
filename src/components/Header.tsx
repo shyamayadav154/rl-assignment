@@ -10,7 +10,7 @@ function Header() {
   return (
     <header className="flex w-full items-center justify-between rounded p-4 shadow-sm">
       <div>
-        logined as &nbsp;
+        Logined as &nbsp;
         <Link className="underline" href={`/${username}`}>
           {username}
         </Link>

@@ -87,9 +87,11 @@ const BeforeAuth = () => {
 };
 
 const Feeds = ({ userId }: { userId: string }) => {
-  const { data, isLoading } = api.posts.getPostByFollowers.useQuery({
-    userId,
-  });
+  const { data, isLoading, isFetching } = api.posts.getPostByFollowers.useQuery(
+    {
+      userId,
+    }
+  );
   console.log({
     data,
   });
@@ -97,6 +99,7 @@ const Feeds = ({ userId }: { userId: string }) => {
   if (!data) return <div>No data</div>;
   return (
     <section className=" ">
+      {isFetching && <div className="flex justify-end">Feeds updating... </div>}
       <h2 className="flex flex-col px-5 pb-2 pt-5 text-xl font-medium text-gray-800">
         <span>Feeds</span>
         <span className="text-xs text-gray-500">

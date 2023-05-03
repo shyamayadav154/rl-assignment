@@ -34,18 +34,19 @@ const ProfileFeed = (props: { userId: string }) => {
 
 const ProfilePage: NextPage = () => {
     const router = useRouter();
-    const username = router.query.username as string;
+    const username = router.query.username 
     const session = useUser();
+    const currentUsername = session.user?.username;
+    const userId = session.user?.id
+    if(!userId || !username || !currentUsername) return null
+    if(typeof username !== "string") return null
 
     const { data, isLoading } = api.users.getUserByUsername.useQuery({
         username,
     });
 
-    const currentUsername = session.user?.username;
-    const userId = session.user?.id
 
     if (!session.isSignedIn) return null;
-    if (!currentUsername || !userId) return <div>Current user not found</div>;
 
     if (isLoading) return <div>Loading...</div>;
 

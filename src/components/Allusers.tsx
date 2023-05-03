@@ -34,12 +34,6 @@ const AllUsers = () => {
   );
 };
 
-// type User = {
-//   id: string;
-//   firstName: string | null;
-//   lastName: string | null;
-//   username: string;
-// };cons
 type User = RouterOutputs["users"]["getAllUsers"][0];
 
 function SingleUser({ user }: { user: User }) {

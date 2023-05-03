@@ -68,13 +68,13 @@ const BeforeAuth = () => {
         Raftlab Assignment
       </h1>
       <section>
-        <article className="w-[400px] space-y-2 ">
+        <article className="w-[250px] space-y-2 ">
           <div className="grid grid-cols-2 gap-2">
             <span className="flex justify-center rounded-lg border px-3 py-1.5">
-              <SignInButton />
+              <SignInButton mode="modal" />
             </span>
             <span className="flex justify-center rounded-lg border px-3 py-1.5">
-              <SignUpButton />
+              <SignUpButton mode="modal" />
             </span>
           </div>
           <div>

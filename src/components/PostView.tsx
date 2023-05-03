@@ -119,6 +119,88 @@ const PostView = (props: PostWithUser) => {
 
 
 
+
+
+const useAddComment = ({
+  userId,
+  postId,
+}: {
+  userId: string;
+  postId: string;
+}) => {
+  const context = api.useContext();
+
+  const mutatePosts = (oldPosts: PostWithUser[], newComment: Comment) =>
+    oldPosts.map((fullPost) => {
+      if (fullPost.post.id === postId) {
+        return {
+          ...fullPost,
+          post: {
+            ...fullPost.post,
+            comments: [...fullPost.post.comments, newComment],
+          },
+        };
+      }
+      return fullPost;
+    });
+
+  return api.posts.addComment.useMutation({
+    onMutate: async (newComment) => {
+      // Optimistically update to the new value
+      await context.posts.getPostByFollowers.cancel();
+      const prevData = context.posts.getPostByFollowers.getData({
+        userId,
+      });
+      if (!prevData) return { prevData: [] };
+      context.posts.getPostsByUserId.setData(
+        {
+          userId,
+        },
+        (oldPosts) => {
+          if (!oldPosts) return [];
+          return mutatePosts(oldPosts, {
+            ...newComment,
+            id: "temp-id",
+            createdAt: new Date(),
+          });
+        }
+      );
+      context.posts.getPostByFollowers.setData(
+        {
+          userId,
+        },
+        (oldPosts) => {
+          console.log({ oldPosts }, "....oldpost.....");
+          if (!oldPosts) return [];
+
+          const mutatedPosts = mutatePosts(oldPosts, {
+            ...newComment,
+            id: "temp-id",
+            createdAt: new Date(),
+          });
+
+          console.log({ mutatedPosts });
+
+          return mutatedPosts;
+        }
+      );
+    },
+    onError: (err, newComment, ctx) => {
+      if (!ctx?.prevData) return;
+      context.posts.getPostByFollowers.setData(
+        {
+          userId,
+        },
+        ctx.prevData
+      );
+    },
+    onSettled: () => {
+      void context.posts.getPostByFollowers.invalidate();
+      void context.posts.getPostsByUserId.invalidate();
+    },
+  });
+};
+
 const CommentWizard = (props: {
   userId: string;
   name: string;
@@ -126,57 +208,11 @@ const CommentWizard = (props: {
   comments: Comment[];
 }) => {
   const [input, setInput] = useState("");
-  const context = api.useContext();
-  const { mutate: mutateComment, isLoading } = api.posts.addComment.useMutation(
-    {
-      onMutate: async (newComment) => {
-        // Optimistically update to the new value
-        setInput("");
-        await context.posts.getPostByFollowers.cancel();
-        const prevData = context.posts.getPostByFollowers.getData({
-          userId: props.userId,
-        });
-        if (!prevData) return { prevData: [] };
-        context.posts.getPostByFollowers.setData(
-          {
-            userId: props.userId,
-          },
-          (oldPosts) => {
-            console.log({ oldPosts }, "....oldpost.....");
-            if (!oldPosts) return [];
-            const mutatedPosts = oldPosts.map((fullPost) => {
-              if (fullPost.post.id === props.postId) {
-                return {
-                  ...fullPost,
-                  post: {
-                    ...fullPost.post,
-                    comments: [...fullPost.post.comments, newComment],
-                  },
-                };
-              }
-              return fullPost;
-            });
-            console.log({ mutatedPosts });
-            return mutatedPosts as PostWithUser[];
-          }
-        );
-      },
-      onError: (err, newComment, ctx) => {
-        if (!ctx?.prevData) return;
-        context.posts.getPostByFollowers.setData(
-          {
-            userId: props.userId,
-          },
-          ctx.prevData
-        );
-      },
-      onSettled: () => {
-        void context.posts.getPostByFollowers.invalidate();
-        void context.posts.getPostsByUserId.invalidate();
-      },
-    }
-  );
   const { name, comments, userId, postId } = props;
+  const { mutate: mutateComment, isLoading } = useAddComment({
+    userId,
+    postId,
+  });
 
   const onSubmitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -186,6 +222,7 @@ const CommentWizard = (props: {
       name,
       content: input,
     });
+    setInput("");
   };
   return (
     <section className="w-full">
@@ -195,7 +232,7 @@ const CommentWizard = (props: {
             value={input}
             disabled={isLoading}
             onChange={(e) => setInput(e.target.value)}
-            className="block w-full rounded-md border-0 py-1.5 text-gray-900  ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-500 sm:text-sm sm:leading-6"
+            className="block w-full rounded-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400  focus:ring-2 focus:ring-inset focus:ring-blue-500 disabled:cursor-not-allowed disabled:bg-gray-50 disabled:text-gray-500 disabled:ring-gray-200 sm:text-sm sm:leading-6"
             type="text"
           />
           <button className="rounded-lg border bg-blue-500 px-3 py-1.5  capitalize text-white">

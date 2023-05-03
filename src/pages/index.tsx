@@ -71,10 +71,10 @@ const BeforeAuth = () => {
         <article className="w-[250px] space-y-2 ">
           <div className="grid grid-cols-2 gap-2">
             <span className="flex justify-center rounded-lg border px-3 py-1.5">
-              <SignInButton mode="modal" />
+              <SignInButton />
             </span>
             <span className="flex justify-center rounded-lg border px-3 py-1.5">
-              <SignUpButton mode="modal" />
+              <SignUpButton />
             </span>
           </div>
           <div>

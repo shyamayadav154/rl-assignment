@@ -1,4 +1,5 @@
 import { useUser } from "@clerk/nextjs";
+import Link from "next/link";
 import { useState } from "react";
 import { api, type RouterOutputs } from "~/utils/api";
 import Avatar from "./Avatar";
@@ -74,9 +75,12 @@ function SingleUser({ user }: { user: User }) {
         <Avatar />
         <div className="">
           <div className=" whitespace-nowrap">{user.firstName}</div>
-          <div className="text-sm font-medium text-gray-400">
-            {user.username}
-          </div>
+          <Link
+            href={user.username ?? "#"}
+            className="text-sm font-medium text-gray-400 hover:underline"
+          >
+            @{user.username}
+          </Link>
         </div>
       </div>
       <button

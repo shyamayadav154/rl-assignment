@@ -15,8 +15,17 @@ const Home: NextPage = () => {
     const user = useUser();
     console.log(user.user?.username, "username");
     if (!user.isLoaded) return null;
-
     if (!user.isSignedIn) return <BeforeAuth />;
+
+    const userId = user.user.id;
+
+    api.users.getAllUsers.useQuery({
+        userId,
+    });
+
+    api.posts.getPostByFollowers.useQuery({
+        userId
+    })
 
     return (
         <>
@@ -24,7 +33,7 @@ const Home: NextPage = () => {
                 <title>Raftlab assignment</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            <main className="mx-auto w-full border-x md:max-w-2xl">
+            <main className="mx-auto w-full border-x  md:max-w-2xl">
                 <section className="flex gap-2 ">
                     {!user.isSignedIn && (
                         <div className="flex gap-4">
@@ -86,16 +95,18 @@ const BeforeAuth = () => {
 };
 
 const Feeds = ({ userId }: { userId: string }) => {
-    const { data, isLoading, isFetching } = api.posts.getPostByFollowers.useQuery(
-        {
-            userId,
-        },
-    );
+    const { data, isLoading, error, isFetching, isError } = api.posts
+        .getPostByFollowers.useQuery(
+            {
+                userId,
+            },
+        );
     console.log({
         data,
     });
     if (isLoading) return <LoadingPage />;
-    if (!data) return <div>No data</div>;
+    if (!data) return <p>No data</p>;
+    if (isError) return <p>Error occurred: {error.message}</p>;
     return (
         <section className=" ">
             {isFetching && <div className="flex justify-end">Feeds updating...</div>}

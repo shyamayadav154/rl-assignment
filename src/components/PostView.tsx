@@ -60,7 +60,7 @@ const PostView = (props: PostWithUser) => {
       </div>
       <div className="flex-1 text-sm">
         <div className="flex gap-1">
-          <Link className="hover:underline" href={author.username}>
+          <Link className="hover:underline capitalize" href={author.username}>
             {author.fullName}
           </Link>
           <span>&#11825;</span>

@@ -3,17 +3,20 @@ import Link from "next/link";
 import { useState } from "react";
 import { api, type RouterOutputs } from "~/utils/api";
 import Avatar from "./Avatar";
+import { LoadingPage } from "./Loading";
 
 const AllUsers = () => {
   const sessionUser = useUser();
   const userId = sessionUser.user?.id;
   if (!userId) return null;
-  const { data: users, isLoading } = api.users.getAllUsers.useQuery({
+  const { data: users, isLoading, isError,error } = api.users.getAllUsers.useQuery({
     userId,
   });
 
-  if (isLoading) return null;
-  if (!users) return <div>No data</div>;
+
+  if (isLoading) return <LoadingPage/>;
+  if (!users) return <p>No data</p>;
+    if(isError) return <p>Error occured : {error.message}</p>
 
   console.log({
     users,

@@ -185,7 +185,7 @@ const useAddComment = ({
         }
       );
     },
-    onError: (err, newComment, ctx) => {
+    onError: (_err, _newComment, ctx) => {
       if (!ctx?.prevData) return;
       context.posts.getPostByFollowers.setData(
         {
@@ -209,7 +209,7 @@ const CommentWizard = (props: {
 }) => {
   const [input, setInput] = useState("");
   const { name, comments, userId, postId } = props;
-  const { mutate: mutateComment, isLoading } = useAddComment({
+  const { mutate: mutateComment } = useAddComment({
     userId,
     postId,
   });
@@ -230,7 +230,6 @@ const CommentWizard = (props: {
         <form onSubmit={onSubmitHandler} className="flex flex-1 gap-2">
           <input
             value={input}
-            disabled={isLoading}
             onChange={(e) => setInput(e.target.value)}
             className="block w-full rounded-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400  focus:ring-2 focus:ring-inset focus:ring-blue-500 disabled:cursor-not-allowed disabled:bg-gray-50 disabled:text-gray-500 disabled:ring-gray-200 sm:text-sm sm:leading-6"
             type="text"

@@ -67,7 +67,7 @@ function SingleUser({ user }: { user: User }) {
 
   console.log(data, "followUser");
   return (
-    <article className="flex items-center justify-between gap-4">
+    <article className="flex items-center border rounded px-2 justify-between gap-4">
       <div className="flex items-center gap-2 ">
         <Avatar />
         <div className="">
@@ -82,7 +82,7 @@ function SingleUser({ user }: { user: User }) {
       </div>
       <button
         onClick={onFollowClick}
-        className="rounded bg-blue-500 px-3 py-1.5 text-sm text-white"
+        className={`rounded  ${isFollowing?"bg-red-500":"bg-blue-500"} px-3 py-1.5 text-sm text-white`}
       >
         {isFollowing ? "Unfollow" : "Follow"}
       </button>

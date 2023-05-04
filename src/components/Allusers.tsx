@@ -14,7 +14,7 @@ const AllUsers = () => {
   });
 
 
-  if (isLoading) return <LoadingPage/>;
+  if (isLoading) return  <LoadingPage/>; 
   if (!users) return <p>No data</p>;
     if(isError) return <p>Error occured : {error.message}</p>
 
@@ -42,6 +42,7 @@ type User = RouterOutputs["users"]["getAllUsers"][0];
 function SingleUser({ user }: { user: User }) {
   const sessionUser = useUser();
   const context = api.useContext();
+    
   const userId = sessionUser.user?.id;
   const [isFollowing, setIsFollowing] = useState(user.isFollowing);
   const { mutate: followUser, data } = api.users.toggleFollow.useMutation({

@@ -3,6 +3,7 @@ import { type NextPage } from "next";
 import Head from "next/head";
 import AllUsers from "~/components/Allusers";
 import Auth from "~/components/Auth";
+import Container from "~/components/Container";
 import Feeds from "~/components/Feeds";
 import Header from "~/components/Header";
 
@@ -32,11 +33,11 @@ const Home: NextPage = () => {
                 <title>Raftlab assignment</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            <main className="mx-auto w-full border-x  md:max-w-2xl">
+            <Container>
                 <Header />
                 <AllUsers />
                 <Feeds userId={user.user.id} />
-            </main>
+            </Container>
         </>
     );
 };

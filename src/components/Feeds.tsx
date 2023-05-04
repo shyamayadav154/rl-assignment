@@ -24,7 +24,7 @@ const Feeds = ({ userId }: { userId: string }) => {
                     (posts by followed users and you)
                 </span>
             </h2>
-            <article className="px-5">
+            <article className="">
                 {feeds.map((fullPost) => (
                     <PostView key={fullPost.post.id} {...fullPost} />
                 ))}

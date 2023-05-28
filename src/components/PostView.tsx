@@ -32,9 +32,6 @@ const PostView = (props: PostWithUser) => {
             if (!data) return;
             setTotalLikes(data.likes.length);
             void context.posts.getPostByFollowers.refetch();
-            console.log({
-                data,
-            });
         },
         onError: () => {
             // Roll back to the previous value
@@ -161,7 +158,6 @@ const useAddComment = ({
             context.posts.getPostByFollowers.setData(
                 undefined,
                 (oldPosts) => {
-                    console.log({ oldPosts }, "....oldpost.....");
                     if (!oldPosts) return [];
 
                     const mutatedPosts = mutatePosts(oldPosts, {
@@ -170,7 +166,6 @@ const useAddComment = ({
                         createdAt: new Date(),
                     });
 
-                    console.log({ mutatedPosts });
 
                     return mutatedPosts;
                 },

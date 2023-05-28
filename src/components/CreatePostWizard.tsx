@@ -75,12 +75,10 @@ const useAddPost = ({ userId }: { userId: string  }) => {
             });
 
             if (!prevData) return { prevData: [] };
-            console.log("prevData....................", prevData);
             context.posts.getPostsByUserId.setData({
                 userId,
             }, (oldPosts) => {
                 if (!oldPosts || !newPost) return;
-                console.log(oldPosts, "....oldPosts.....");
                 const username = session.user?.username || "";
                 const fullName = session.user?.fullName || "";
                 return mutatePost(
@@ -168,7 +166,6 @@ function CreatePostWizard({userId}:{userId:string}) {
         const file = e.target?.files[0];
         if (!file) return;
         const size = file?.size / 1024 / 1024;
-        console.log(size);
 
         if (size > 3.05) {
             alert("Image size should be less than 3Mb");
@@ -301,7 +298,6 @@ function TagModal({
         });
     }, [search, users]);
 
-    console.log(filteredUsers, users, selectedUsers);
 
     return (
         <section className="h-[500px] w-[500px] rounded-lg bg-white p-2  ">

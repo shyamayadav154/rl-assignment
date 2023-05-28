@@ -36,7 +36,6 @@ export const usersRouter = createTRPCRouter({
 
             const followings = await ctx.prisma.followings.findMany();
             const userId = ctx.userId;
-            if (!userId) console.log("............what............");
 
             const sendRequiredDataFromUsers = users
                 .map((user) => ({

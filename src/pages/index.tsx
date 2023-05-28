@@ -11,19 +11,20 @@ import { api } from "~/utils/api";
 
 const Home: NextPage = () => {
     const user = useUser();
+    const apiUtils = api.useContext()
 
     if (!user.isLoaded) return null;
     if (!user.isSignedIn) return <Auth />;
 
     const userId = user.user.id;
 
-    // prefetch all users data
-    api.users.getAllUsers.useQuery({
+    // start fetching all users data asap
+    apiUtils.users.getAllUsers.prefetch({
         userId,
     });
 
-    // prefetch all posts data
-    api.posts.getPostByFollowers.useQuery({
+    // start fetching all posts data asap
+    apiUtils.posts.getPostByFollowers.prefetch({
         userId,
     });
 

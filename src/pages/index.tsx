@@ -7,26 +7,11 @@ import Container from "~/components/Container";
 import Feeds from "~/components/Feeds";
 import Header from "~/components/Header";
 
-import { api } from "~/utils/api";
-
 const Home: NextPage = () => {
     const user = useUser();
-    const apiUtils = api.useContext()
 
     if (!user.isLoaded) return null;
     if (!user.isSignedIn) return <Auth />;
-
-    const userId = user.user.id;
-
-    // start fetching all users data asap
-    apiUtils.users.getAllUsers.prefetch({
-        userId,
-    });
-
-    // start fetching all posts data asap
-    apiUtils.posts.getPostByFollowers.prefetch({
-        userId,
-    });
 
     return (
         <>
@@ -37,7 +22,7 @@ const Home: NextPage = () => {
             <Container>
                 <Header />
                 <AllUsers />
-                <Feeds userId={user.user.id} />
+                <Feeds />
             </Container>
         </>
     );

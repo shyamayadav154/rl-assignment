@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import Avatar from "~/components/Avatar";
 import Container from "~/components/Container";
 import CreatePostWizard from "~/components/CreatePostWizard";
-import { LoadingPage } from "~/components/Loading";
+import { LoadingSpinner } from "~/components/Loading";
 import PostView from "~/components/PostView";
 import { api } from "~/utils/api";
 
@@ -28,7 +28,7 @@ const ProfilePage: NextPage = () => {
     if (isLoading) {
         return (
             <Container>
-                <LoadingPage />
+                <LoadingSpinner />
             </Container>
         );
     }
@@ -73,7 +73,7 @@ const ProfileFeed = (props: { userId: string }) => {
         userId: props.userId,
     });
 
-    if (isLoading) return <LoadingPage />;
+    if (isLoading) return <LoadingSpinner />;
 
     if (!data || data.length === 0) return <div>User has not posted</div>;
     if (isError) return <div>Error loading user posts</div>;

@@ -255,7 +255,6 @@ function CreatePostWizard({userId}:{userId:string}) {
                         closeModal={() => setIsTagModal(false)}
                         selectedUsers={selectedUsers}
                         handleSelectUser={handleSelectTags}
-                        userId={userId}
                     />
                 )}
             </Modal>
@@ -281,20 +280,16 @@ type User = RouterOutputs["users"]["getAllUsers"][0];
 type TagModalProps = {
     selectedUsers: Tag[];
     handleSelectUser: (user: User) => void;
-    userId: string;
     closeModal: () => void;
 };
 
 function TagModal({
-    userId,
     selectedUsers,
     handleSelectUser,
     closeModal,
 }: TagModalProps) {
     const [search, setSearch] = useState("");
-    const { data: users } = api.users.getAllUsers.useQuery({
-        userId,
-    });
+    const { data: users } = api.users.getAllUsers.useQuery();
 
     const filteredUsers = useMemo(() => {
         if (!users) return [];

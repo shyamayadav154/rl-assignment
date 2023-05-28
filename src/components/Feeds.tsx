@@ -1,17 +1,12 @@
 import { api } from "~/utils/api";
-import { LoadingPage } from "./Loading";
 import PostView from "./PostView";
+import { LoadingSpinner } from "./Loading";
 
-const Feeds = ({ userId }: { userId: string }) => {
-
+const Feeds = () => {
     const { data: feeds, isLoading, error, isFetching, isError } = api.posts
-        .getPostByFollowers.useQuery(
-            {
-                userId,
-            },
-        );
+        .getPostByFollowers.useQuery();
 
-    if (isLoading) return <LoadingPage />;
+    if (isLoading) return <LoadingSpinner />;
     if (!feeds) return <p>No data</p>;
     if (isError) return <p>Error occurred: {error.message}</p>;
 

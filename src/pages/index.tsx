@@ -8,10 +8,10 @@ import Feeds from "~/components/Feeds";
 import Header from "~/components/Header";
 
 const Home: NextPage = () => {
-    const user = useUser();
+    const session = useUser();
 
-    if (!user.isLoaded) return null;
-    if (!user.isSignedIn) return <Auth />;
+    if (!session.isLoaded) return null;
+    if (!session.isSignedIn) return <Auth />;
 
     return (
         <>
@@ -20,7 +20,7 @@ const Home: NextPage = () => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <Container>
-                <Header />
+                <Header userName={session.user.username} />
                 <AllUsers />
                 <Feeds />
             </Container>
